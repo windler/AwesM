@@ -1,0 +1,32 @@
+digraph  {
+graph [bgcolor="#333333"]
+node [style="filled" fontcolor="white" fontname="Courier" shape="oval" fillcolor="#336699"]
+edge [arrowhead="open" color="white" fontcolor="white" splines="curved"]
+"#end"[shape="doublecircle" label="" style="filled" fillcolor="#111111" height="0.3"]
+"#start"[shape="circle" label="" style="filled" fillcolor="#111111" height="0.3"]
+"#start"->"wake up"
+"wake up"
+"wake up"->"stand up"
+"stand up"
+"stand up"->"cond_5577006791947779410"
+"cond_5577006791947779410"[shape="diamond" label="" fillcolor="#111111"]
+"cond_5577006791947779410"->"not tired]shower"[label="not tired"]
+"cond_5577006791947779410"->"tired]drink coffee"[label="tired"]
+"not tired]shower"[label="shower"]
+"not tired]shower"->"get clothed"
+"brush teeth"
+"brush teeth"->"cond_join_"
+"still tired]make sports"[label="make sports"]
+"still tired]make sports"->"cond_join_cond_join_"
+"get clothed"
+"get clothed"->"brush teeth"
+"tired]drink coffee"[label="drink coffee"]
+"tired]drink coffee"->"cond_8674665223082153551"
+"cond_8674665223082153551"[shape="diamond" label="" fillcolor="#111111"]
+"cond_8674665223082153551"->"still tired]make sports"[label="still tired"]
+"cond_8674665223082153551"->"cond_join_cond_join_"
+"cond_join_cond_join_"[fillcolor="#111111" shape="diamond" label="" shape="diamond" label="" fillcolor="#111111"]
+"cond_join_cond_join_"->"cond_join_"
+"cond_join_"[shape="diamond" label="" fillcolor="#111111"]
+"cond_join_"->"#end"
+}
