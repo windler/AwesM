@@ -24,7 +24,7 @@ func (f IfPathInstructionFactory) New(name string, predecessor, parent *AMLInstr
 
 func getLabelName(name string) string {
 	r := regexp.MustCompile("\\[(.+)\\].+")
-	return r.FindStringSubmatch(name)[1]
+	return " [" + r.FindStringSubmatch(name)[1] + "]"
 }
 
 func getNodeName(name string) string {
