@@ -1,0 +1,4 @@
+language: go
+output: deps.png
+package: github.com/windler/awesm
+nogopackages: true

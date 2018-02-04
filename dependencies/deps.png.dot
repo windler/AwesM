@@ -1,0 +1,15 @@
+digraph godepg {
+graph [bgcolor="#333333"]
+node [style="filled" fontcolor="white" fontname="Courier" shape="rectangle" fillcolor="#336699"]
+edge [arrowhead="open" color="white" fontcolor="white" splines="curved"]
+"github.com/windler/awesm"
+"github.com/windler/awesm"->"github.com/windler/awesm/aml"
+"github.com/windler/awesm"->"github.com/windler/awesm/aml/instructions"
+"github.com/windler/awesm"->"github.com/windler/dotgraph/renderer"
+"github.com/windler/awesm/aml"
+"github.com/windler/awesm/aml"->"github.com/windler/awesm/aml/instructions"
+"github.com/windler/awesm/aml"->"github.com/windler/dotgraph/graph"
+"github.com/windler/awesm/aml/instructions"
+"github.com/windler/awesm/aml/instructions"->"github.com/golang-collections/collections/stack"
+"github.com/windler/awesm/aml/instructions"->"github.com/windler/dotgraph/graph"
+}

@@ -2,7 +2,7 @@ package aml
 
 import (
 	"github.com/windler/awesm/aml/instructions"
-	"github.com/windler/godepg/dotgraph"
+	"github.com/windler/dotgraph/graph"
 )
 
 type AMLFile struct {
@@ -10,16 +10,16 @@ type AMLFile struct {
 	Instructions []instructions.AMLInstruction
 }
 
-func (af AMLFile) CreateDotGraph() *dotgraph.DotGraph {
-	graph := dotgraph.New(af.GraphType)
-	graph.SetEdgeGraphOptions(dotgraph.DotGraphOptions{
+func (af AMLFile) CreateDotGraph() *graph.DotGraph {
+	g := graph.New(af.GraphType)
+	g.SetEdgeGraphOptions(graph.DotGraphOptions{
 		"arrowhead": "open",
 		"color":     "white",
 		"fontcolor": "white",
 		"splines":   "curved",
 	})
 
-	graph.SetNodeGraphOptions(dotgraph.DotGraphOptions{
+	g.SetNodeGraphOptions(graph.DotGraphOptions{
 		"fillcolor": "#336699",
 		"style":     "filled",
 		"fontcolor": "white",
@@ -27,7 +27,7 @@ func (af AMLFile) CreateDotGraph() *dotgraph.DotGraph {
 		"shape":     "oval",
 	})
 
-	graph.SetGraphOptions(dotgraph.DotGraphOptions{
+	g.SetGraphOptions(graph.DotGraphOptions{
 		"bgcolor": "#333333",
 	})
 
@@ -35,16 +35,16 @@ func (af AMLFile) CreateDotGraph() *dotgraph.DotGraph {
 		name := instruction.GetNodeName()
 		predecessors := instruction.GetPredecessors()
 
-		graph.AddNode(name)
-		graph.AddNodeGraphPatternOptions(name, instruction.GetNodeOptions())
+		g.AddNode(name)
+		g.AddNodeGraphPatternOptions(name, instruction.GetNodeOptions())
 
 		for _, predecessor := range predecessors {
 			edgeOptions := instruction.GetEdgeOptions()
 
-			graph.AddDirectedEdge(predecessor.GetNodeName(), name, "")
-			graph.AddEdgeGraphPatternOptions(name, edgeOptions)
+			g.AddDirectedEdge(predecessor.GetNodeName(), name, "")
+			g.AddEdgeGraphPatternOptions(name, edgeOptions)
 		}
 	}
 
-	return graph
+	return g
 }

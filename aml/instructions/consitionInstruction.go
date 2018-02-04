@@ -9,8 +9,9 @@ import (
 type IfInstructionFactory struct{}
 
 func (f IfInstructionFactory) New(name string, predecessor, parent *AMLInstruction) AMLInstruction {
+	randName := strconv.FormatInt(int64(rand.Int()), 10)
 	ins := AMLInstruction{
-		Name:        "cond_" + strconv.FormatInt(int64(rand.Int()), 10),
+		Name:        "cond_" + randName,
 		Predecesors: []*AMLInstruction{predecessor},
 		NodeOptions: map[string]string{
 			"shape":     "diamond",
@@ -23,7 +24,7 @@ func (f IfInstructionFactory) New(name string, predecessor, parent *AMLInstructi
 	pathJoinNodePredecessors := getJoinNodePredecessors(name, &ins)
 
 	ins.PathJoinNode = &AMLInstruction{
-		Name: strings.Replace(name, "?", "cond_join_", -1),
+		Name: "join_" + randName,
 		NodeOptions: map[string]string{
 			"shape":     "diamond",
 			"label":     "",

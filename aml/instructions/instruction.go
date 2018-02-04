@@ -1,6 +1,6 @@
 package instructions
 
-import "github.com/windler/godepg/dotgraph"
+import "github.com/windler/dotgraph/graph"
 
 type AMLInstruction struct {
 	Name          string
@@ -15,11 +15,11 @@ func (i *AMLInstruction) GetPredecessors() []*AMLInstruction {
 	return i.Predecesors
 }
 
-func (i *AMLInstruction) GetNodeOptions() dotgraph.DotGraphOptions {
+func (i *AMLInstruction) GetNodeOptions() graph.DotGraphOptions {
 	return i.NodeOptions
 }
 
-func (i *AMLInstruction) GetEdgeOptions() dotgraph.DotGraphOptions {
+func (i *AMLInstruction) GetEdgeOptions() graph.DotGraphOptions {
 	return i.EdgeOptions
 }
 

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/windler/godepg/dotgraph"
+	"github.com/windler/dotgraph/renderer"
 
 	"github.com/windler/awesm/aml"
 	"github.com/windler/awesm/aml/instructions"
@@ -23,7 +23,7 @@ func main() {
 		return
 	}
 
-	r := dotgraph.PNGRenderer{
+	r := renderer.PNGRenderer{
 		HomeDir:    "",
 		OutputFile: "examples/simple_test.png",
 		Prefix:     "",
