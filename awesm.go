@@ -14,6 +14,7 @@ func main() {
 	amlParser.AddFactory(instructions.StartInstructionFactory{})
 	amlParser.AddFactory(instructions.EndInstructionFactory{})
 	amlParser.AddFactory(instructions.IfInstructionFactory{})
+	amlParser.AddFactory(instructions.ParallelInstructionFactory{})
 	amlParser.AddFactory(instructions.ActivityInstructionFactory{})
 
 	aml, err := amlParser.Parse()

@@ -10,12 +10,9 @@ import (
 type IfInstructionFactory struct{}
 
 func (f IfInstructionFactory) New(name string) *AMLInstruction {
-	return &AMLInstruction{
-		Name: getNodeName(name),
-		EdgeOptions: map[string]string{
-			"label": getLabelName(name),
-		},
-	}
+	activity := ActivityInstructionFactory{}.New(getCondNodeName(name))
+	activity.EdgeOptions["label"] = getCondLabelName(name)
+	return activity
 }
 
 func (f IfInstructionFactory) NewForkNode(name string) *AMLInstruction {
@@ -41,21 +38,21 @@ func (f IfInstructionFactory) NewJoinNode(name string, forkNode *AMLInstruction)
 			"fillcolor": "#111111",
 		},
 		EdgeOptions:  make(map[string]string),
-		Predecessors: getJoinNodePredecessors(name, forkNode),
+		Predecessors: getCondJoinNodePredecessors(name, forkNode),
 	}
 }
 
-func getLabelName(name string) string {
+func getCondLabelName(name string) string {
 	r := regexp.MustCompile("\\?{1,2}\\[(.+)\\].+")
 	return " [" + r.FindStringSubmatch(name)[1] + "]"
 }
 
-func getNodeName(name string) string {
+func getCondNodeName(name string) string {
 	r := regexp.MustCompile("\\?{1,2}\\[.+\\](.+)")
 	return r.FindStringSubmatch(name)[1]
 }
 
-func getJoinNodePredecessors(name string, ins *AMLInstruction) []*AMLInstruction {
+func getCondJoinNodePredecessors(name string, ins *AMLInstruction) []*AMLInstruction {
 	if strings.Contains(name, "??") {
 		return []*AMLInstruction{ins}
 	}

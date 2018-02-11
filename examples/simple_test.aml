@@ -6,4 +6,6 @@ stand up
 ..brush teeth 
 ..?[tired]drink coffee
 ....??[still tired]make sports
+......|put on socks
+......|go to toilet
 #end

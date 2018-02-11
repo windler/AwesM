@@ -7,15 +7,13 @@
 #start
 wake up
 stand up
-
-?
-..[not tired]shower
+..?[not tired]shower
 ..get clothed
 ..brush teeth 
-..[tired]drink coffee
-..??
-....[still tired]make sports
-
+..?[tired]drink coffee
+....??[still tired]make sports
+......|put on socks
+......|go to toilet
 #end
 ``` 
 
