@@ -3,16 +3,16 @@ package instructions
 import "github.com/windler/dotgraph/graph"
 
 type AMLInstruction struct {
-	Name          string
-	Predecesors   []*AMLInstruction
-	NodeOptions   map[string]string
-	EdgeOptions   map[string]string
-	PathBeginning bool
-	PathJoinNode  *AMLInstruction
+	Name         string
+	Predecessors []*AMLInstruction
+	NodeOptions  map[string]string
+	EdgeOptions  map[string]string
+	PathForkNode *AMLInstruction
+	PathJoinNode *AMLInstruction
 }
 
 func (i *AMLInstruction) GetPredecessors() []*AMLInstruction {
-	return i.Predecesors
+	return i.Predecessors
 }
 
 func (i *AMLInstruction) GetNodeOptions() graph.DotGraphOptions {
@@ -28,9 +28,13 @@ func (i *AMLInstruction) GetNodeName() string {
 }
 
 func (i *AMLInstruction) IsPathBeginning() bool {
-	return i.PathBeginning
+	return i.PathForkNode != nil
 }
 
 func (i *AMLInstruction) GetPathJoinNode() *AMLInstruction {
 	return i.PathJoinNode
+}
+
+func (i *AMLInstruction) GetPathForkNode() *AMLInstruction {
+	return i.PathForkNode
 }

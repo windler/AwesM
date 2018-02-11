@@ -2,17 +2,25 @@ package instructions
 
 import (
 	"math/rand"
+	"regexp"
 	"strconv"
 	"strings"
 )
 
 type IfInstructionFactory struct{}
 
-func (f IfInstructionFactory) New(name string, predecessor, parent *AMLInstruction) AMLInstruction {
+func (f IfInstructionFactory) New(name string) AMLInstruction {
 	randName := strconv.FormatInt(int64(rand.Int()), 10)
+
 	ins := AMLInstruction{
-		Name:        "cond_" + randName,
-		Predecesors: []*AMLInstruction{predecessor},
+		Name: getNodeName(name),
+		EdgeOptions: map[string]string{
+			"label": getLabelName(name),
+		},
+	}
+
+	forkNode := &AMLInstruction{
+		Name: "cond_" + randName,
 		NodeOptions: map[string]string{
 			"shape":     "diamond",
 			"label":     "",
@@ -21,20 +29,31 @@ func (f IfInstructionFactory) New(name string, predecessor, parent *AMLInstructi
 		EdgeOptions: make(map[string]string),
 	}
 
-	pathJoinNodePredecessors := getJoinNodePredecessors(name, &ins)
-
-	ins.PathJoinNode = &AMLInstruction{
+	joinNode := &AMLInstruction{
 		Name: "join_" + randName,
 		NodeOptions: map[string]string{
 			"shape":     "diamond",
 			"label":     "",
 			"fillcolor": "#111111",
 		},
-		EdgeOptions: make(map[string]string),
-		Predecesors: pathJoinNodePredecessors,
+		EdgeOptions:  make(map[string]string),
+		Predecessors: getJoinNodePredecessors(name, forkNode),
 	}
 
+	forkNode.PathJoinNode = joinNode
+	ins.PathForkNode = forkNode
+
 	return ins
+}
+
+func getLabelName(name string) string {
+	r := regexp.MustCompile("\\?{1,2}\\[(.+)\\].+")
+	return " [" + r.FindStringSubmatch(name)[1] + "]"
+}
+
+func getNodeName(name string) string {
+	r := regexp.MustCompile("\\?{1,2}\\[.+\\](.+)")
+	return r.FindStringSubmatch(name)[1]
 }
 
 func getJoinNodePredecessors(name string, ins *AMLInstruction) []*AMLInstruction {
@@ -45,5 +64,5 @@ func getJoinNodePredecessors(name string, ins *AMLInstruction) []*AMLInstruction
 }
 
 func (f IfInstructionFactory) GetPattern() string {
-	return "\\?"
+	return "\\?{1,2}\\[.+\\]"
 }

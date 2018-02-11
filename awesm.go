@@ -13,7 +13,6 @@ func main() {
 	amlParser := aml.NewFileParser("examples/simple_test.aml")
 	amlParser.AddFactory(instructions.StartInstructionFactory{})
 	amlParser.AddFactory(instructions.EndInstructionFactory{})
-	amlParser.AddFactory(instructions.IfPathInstructionFactory{})
 	amlParser.AddFactory(instructions.IfInstructionFactory{})
 	amlParser.AddFactory(instructions.ActivityInstructionFactory{})
 

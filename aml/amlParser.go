@@ -53,15 +53,13 @@ func (p *AMLFileParser) parseLine(aml *AMLFile, line string) {
 		return
 	}
 
-	p.handleParents(line, aml)
-
-	parent := p.getCurrentParent()
 	strippedLine := strings.Replace(line, ".", "", -1)
 	factory := p.getFactory(strippedLine)
 
-	new := (*factory).New(strippedLine, p.predecessor, parent)
-	p.handlePathBeginningNode(new)
+	new := (*factory).New(strippedLine)
 
+	p.handleParents(&new, line, aml)
+	p.handlePathBeginningNode(new)
 	p.addInstruction(aml, &new)
 }
 
@@ -72,6 +70,9 @@ func (p *AMLFileParser) addInstruction(aml *AMLFile, ins *instructions.AMLInstru
 		currentStack.Push(ins)
 	}
 
+	if p.predecessor != nil {
+		ins.Predecessors = append(ins.Predecessors, p.predecessor)
+	}
 	aml.Instructions = append(aml.Instructions, *ins)
 	p.predecessor = ins
 }
@@ -81,16 +82,19 @@ func (p *AMLFileParser) handlePathBeginningNode(ins instructions.AMLInstruction)
 		parent := p.getCurrentParent()
 
 		p.parentPathNodes[parent.Name] = append(p.parentPathNodes[parent.Name], *instructions.NewInstructionStack())
+		p.predecessor = parent
 	}
 }
 
-func (p *AMLFileParser) handleParents(line string, aml *AMLFile) {
+func (p *AMLFileParser) handleParents(ins *instructions.AMLInstruction, line string, aml *AMLFile) {
 	tabs := strings.Count(line, ".") / 2
 
 	//new parent
 	if p.parents.Len() < tabs {
-		p.parents.Push(p.predecessor)
-		p.parentPathNodes[(*p.predecessor).Name] = []instructions.InstructionStack{
+		forkNode := ins.GetPathForkNode()
+		p.addInstruction(aml, forkNode)
+		p.parents.Push(forkNode)
+		p.parentPathNodes[forkNode.Name] = []instructions.InstructionStack{
 			*instructions.NewInstructionStack(),
 		}
 	}
@@ -102,7 +106,9 @@ func (p *AMLFileParser) handleParents(line string, aml *AMLFile) {
 		for _, stack := range p.parentPathNodes[lastParent.Name] {
 			if stack.Len() > 0 {
 				lastPathElem := stack.Peek()
-				lastParent.GetPathJoinNode().Predecesors = append(lastParent.GetPathJoinNode().Predecesors, lastPathElem)
+				if lastPathElem != nil {
+					lastParent.GetPathJoinNode().Predecessors = append(lastParent.GetPathJoinNode().Predecessors, lastPathElem)
+				}
 			}
 		}
 

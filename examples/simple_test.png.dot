@@ -1,32 +1,32 @@
 digraph  {
 graph [bgcolor="#333333"]
-node [fontname="Courier" shape="oval" fillcolor="#336699" style="filled" fontcolor="white"]
-edge [fontcolor="white" splines="curved" arrowhead="open" color="white"]
-"still tired]make sports"[label="make sports"]
-"still tired]make sports"->"join_8674665223082153551"
-"#end"[height="0.3" shape="doublecircle" label="" style="filled" fillcolor="#111111"]
-"#start"[fillcolor="#111111" height="0.3" shape="circle" label="" style="filled"]
+node [fontcolor="white" fontname="Courier" shape="oval" fillcolor="#336699" style="filled"]
+edge [arrowhead="open" color="white" fontcolor="white" splines="curved"]
+"#start"[label="" style="filled" fillcolor="#111111" height="0.3" shape="circle"]
 "#start"->"wake up"
-"wake up"
-"wake up"->"stand up"
-"tired]drink coffee"[label="drink coffee"]
-"tired]drink coffee"->"cond_8674665223082153551"
-"get clothed"
-"get clothed"->"brush teeth"
-"brush teeth"
-"brush teeth"->"join_5577006791947779410"
-"cond_8674665223082153551"[shape="diamond" label="" fillcolor="#111111"]
-"cond_8674665223082153551"->"still tired]make sports"[label=" [still tired]"]
-"cond_8674665223082153551"->"join_8674665223082153551"
-"join_8674665223082153551"[fillcolor="#111111" shape="diamond" label=""]
-"join_8674665223082153551"->"join_5577006791947779410"
-"join_5577006791947779410"[shape="diamond" label="" fillcolor="#111111"]
-"join_5577006791947779410"->"#end"
 "stand up"
 "stand up"->"cond_5577006791947779410"
-"cond_5577006791947779410"[fillcolor="#111111" shape="diamond" label=""]
-"cond_5577006791947779410"->"not tired]shower"[label=" [not tired]"]
-"cond_5577006791947779410"->"tired]drink coffee"[label=" [tired]"]
-"not tired]shower"[label="shower"]
-"not tired]shower"->"get clothed"
+"shower"
+"shower"->"get clothed"
+"get clothed"
+"get clothed"->"brush teeth"
+"join_5577006791947779410"[shape="diamond" label="" fillcolor="#111111"]
+"join_5577006791947779410"->"#end"
+"#end"[fillcolor="#111111" height="0.3" shape="doublecircle" label="" style="filled"]
+"wake up"
+"wake up"->"stand up"
+"cond_5577006791947779410"[shape="diamond" label="" fillcolor="#111111"]
+"cond_5577006791947779410"->"shower"[label=" [not tired]"]
+"cond_5577006791947779410"->"drink coffee"[label=" [tired]"]
+"brush teeth"
+"brush teeth"->"join_5577006791947779410"
+"drink coffee"
+"drink coffee"->"cond_6129484611666145821"
+"cond_6129484611666145821"[shape="diamond" label="" fillcolor="#111111"]
+"cond_6129484611666145821"->"make sports"[label=" [still tired]"]
+"cond_6129484611666145821"->"join_6129484611666145821"
+"make sports"
+"make sports"->"join_6129484611666145821"
+"join_6129484611666145821"[fillcolor="#111111" shape="diamond" label=""]
+"join_6129484611666145821"->"join_5577006791947779410"
 }

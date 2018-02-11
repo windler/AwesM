@@ -2,10 +2,9 @@ package instructions
 
 type EndInstructionFactory struct{}
 
-func (f EndInstructionFactory) New(name string, predecessor, parent *AMLInstruction) AMLInstruction {
+func (f EndInstructionFactory) New(name string) AMLInstruction {
 	return AMLInstruction{
-		Name:        name,
-		Predecesors: []*AMLInstruction{predecessor},
+		Name: name,
 		NodeOptions: map[string]string{
 			"shape":     "doublecircle",
 			"label":     "",

@@ -6,10 +6,10 @@ import (
 
 type StartInstructionFactory struct{}
 
-func (f StartInstructionFactory) New(name string, predecessor, parent *AMLInstruction) AMLInstruction {
+func (f StartInstructionFactory) New(name string) AMLInstruction {
 	return AMLInstruction{
-		Name:        strings.Replace(name, "?", "cond_", -1),
-		Predecesors: []*AMLInstruction{},
+		Name:         strings.Replace(name, "?", "cond_", -1),
+		Predecessors: []*AMLInstruction{},
 		NodeOptions: map[string]string{
 			"shape":     "circle",
 			"label":     "",

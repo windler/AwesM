@@ -10,6 +10,6 @@ type AMLParser interface {
 }
 
 type AMLInstructionFactory interface {
-	New(name string, predecessor *instructions.AMLInstruction, parent *instructions.AMLInstruction) instructions.AMLInstruction
+	New(name string) instructions.AMLInstruction
 	GetPattern() string
 }
