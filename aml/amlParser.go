@@ -15,6 +15,7 @@ type AMLFileParser struct {
 	predecessor     *instructions.AMLInstruction
 	parents         *instructions.InstructionStack
 	parentPathNodes map[string][]instructions.InstructionStack
+	parentJoinNode  map[string]*instructions.AMLInstruction
 }
 
 func NewFileParser(file string) *AMLFileParser {
@@ -23,6 +24,7 @@ func NewFileParser(file string) *AMLFileParser {
 		factories:       []AMLInstructionFactory{},
 		parents:         instructions.NewInstructionStack(),
 		parentPathNodes: map[string][]instructions.InstructionStack{},
+		parentJoinNode:  map[string]*instructions.AMLInstruction{},
 	}
 }
 
@@ -58,9 +60,9 @@ func (p *AMLFileParser) parseLine(aml *AMLFile, line string) {
 
 	new := (*factory).New(strippedLine)
 
-	p.handleParents(&new, line, aml)
-	p.handlePathBeginningNode(new)
-	p.addInstruction(aml, &new)
+	p.handleFork(new, factory, line, aml)
+	p.handleParents(line, aml)
+	p.addInstruction(aml, new)
 }
 
 func (p *AMLFileParser) addInstruction(aml *AMLFile, ins *instructions.AMLInstruction) {
@@ -77,42 +79,50 @@ func (p *AMLFileParser) addInstruction(aml *AMLFile, ins *instructions.AMLInstru
 	p.predecessor = ins
 }
 
-func (p *AMLFileParser) handlePathBeginningNode(ins instructions.AMLInstruction) {
-	if ins.IsPathBeginning() {
-		parent := p.getCurrentParent()
+func (p *AMLFileParser) handlePathBeginningNode(ins *instructions.AMLInstruction) {
+	parent := p.getCurrentParent()
 
-		p.parentPathNodes[parent.Name] = append(p.parentPathNodes[parent.Name], *instructions.NewInstructionStack())
-		p.predecessor = parent
+	p.parentPathNodes[parent.Name] = append(p.parentPathNodes[parent.Name], *instructions.NewInstructionStack())
+	p.predecessor = parent
+}
+
+func (p *AMLFileParser) handleFork(new *instructions.AMLInstruction, factory *AMLInstructionFactory, line string, aml *AMLFile) {
+	forkNode := (*factory).NewForkNode(line)
+	if forkNode != nil {
+		tabs := strings.Count(line, ".") / 2
+
+		if p.parents.Len() < tabs {
+			p.addInstruction(aml, forkNode)
+			p.parents.Push(forkNode)
+			p.parentPathNodes[forkNode.Name] = []instructions.InstructionStack{
+				*instructions.NewInstructionStack(),
+			}
+
+			joinNode := (*factory).NewJoinNode(line, forkNode)
+			p.parentJoinNode[forkNode.Name] = joinNode
+		}
+
+		p.handlePathBeginningNode(new)
 	}
 }
 
-func (p *AMLFileParser) handleParents(ins *instructions.AMLInstruction, line string, aml *AMLFile) {
+func (p *AMLFileParser) handleParents(line string, aml *AMLFile) {
 	tabs := strings.Count(line, ".") / 2
 
-	//new parent
-	if p.parents.Len() < tabs {
-		forkNode := ins.GetPathForkNode()
-		p.addInstruction(aml, forkNode)
-		p.parents.Push(forkNode)
-		p.parentPathNodes[forkNode.Name] = []instructions.InstructionStack{
-			*instructions.NewInstructionStack(),
-		}
-	}
-
-	//parent left
 	for tabs < p.parents.Len() {
 		lastParent := p.parents.Pop()
+		parentJoinNode := p.parentJoinNode[lastParent.Name]
 
 		for _, stack := range p.parentPathNodes[lastParent.Name] {
 			if stack.Len() > 0 {
 				lastPathElem := stack.Peek()
 				if lastPathElem != nil {
-					lastParent.GetPathJoinNode().Predecessors = append(lastParent.GetPathJoinNode().Predecessors, lastPathElem)
+					parentJoinNode.Predecessors = append(parentJoinNode.Predecessors, lastPathElem)
 				}
 			}
 		}
 
-		p.addInstruction(aml, lastParent.GetPathJoinNode())
+		p.addInstruction(aml, parentJoinNode)
 	}
 }
 

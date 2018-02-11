@@ -10,6 +10,8 @@ type AMLParser interface {
 }
 
 type AMLInstructionFactory interface {
-	New(name string) instructions.AMLInstruction
+	New(name string) *instructions.AMLInstruction
+	NewForkNode(name string) *instructions.AMLInstruction
+	NewJoinNode(name string, forkNode *instructions.AMLInstruction) *instructions.AMLInstruction
 	GetPattern() string
 }

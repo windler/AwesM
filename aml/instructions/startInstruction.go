@@ -4,10 +4,12 @@ import (
 	"strings"
 )
 
-type StartInstructionFactory struct{}
+type StartInstructionFactory struct {
+	*NoForkFactory
+}
 
-func (f StartInstructionFactory) New(name string) AMLInstruction {
-	return AMLInstruction{
+func (f StartInstructionFactory) New(name string) *AMLInstruction {
+	return &AMLInstruction{
 		Name:         strings.Replace(name, "?", "cond_", -1),
 		Predecessors: []*AMLInstruction{},
 		NodeOptions: map[string]string{

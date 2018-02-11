@@ -2,13 +2,21 @@ package instructions
 
 import "github.com/windler/dotgraph/graph"
 
+type NoForkFactory struct{}
+
+func (f *NoForkFactory) NewJoinNode(name string, forkNode *AMLInstruction) *AMLInstruction {
+	return nil
+}
+
+func (f *NoForkFactory) NewForkNode(name string) *AMLInstruction {
+	return nil
+}
+
 type AMLInstruction struct {
 	Name         string
 	Predecessors []*AMLInstruction
 	NodeOptions  map[string]string
 	EdgeOptions  map[string]string
-	PathForkNode *AMLInstruction
-	PathJoinNode *AMLInstruction
 }
 
 func (i *AMLInstruction) GetPredecessors() []*AMLInstruction {
@@ -25,16 +33,4 @@ func (i *AMLInstruction) GetEdgeOptions() graph.DotGraphOptions {
 
 func (i *AMLInstruction) GetNodeName() string {
 	return i.Name
-}
-
-func (i *AMLInstruction) IsPathBeginning() bool {
-	return i.PathForkNode != nil
-}
-
-func (i *AMLInstruction) GetPathJoinNode() *AMLInstruction {
-	return i.PathJoinNode
-}
-
-func (i *AMLInstruction) GetPathForkNode() *AMLInstruction {
-	return i.PathForkNode
 }

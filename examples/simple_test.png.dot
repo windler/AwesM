@@ -1,8 +1,22 @@
 digraph  {
 graph [bgcolor="#333333"]
 node [fontcolor="white" fontname="Courier" shape="oval" fillcolor="#336699" style="filled"]
-edge [arrowhead="open" color="white" fontcolor="white" splines="curved"]
-"#start"[label="" style="filled" fillcolor="#111111" height="0.3" shape="circle"]
+edge [color="white" fontcolor="white" splines="curved" arrowhead="open"]
+"wake up"
+"wake up"->"stand up"
+"cond_5577006791947779410"[shape="diamond" label="" fillcolor="#111111"]
+"cond_5577006791947779410"->"shower"[label=" [not tired]"]
+"cond_5577006791947779410"->"drink coffee"[label=" [tired]"]
+"drink coffee"
+"drink coffee"->"cond_4037200794235010051"
+"join_3916589616287113937"[label="" fillcolor="#111111" shape="diamond"]
+"join_3916589616287113937"->"join_8674665223082153551"
+"#end"[shape="doublecircle" label="" style="filled" fillcolor="#111111" height="0.3"]
+"make sports"
+"make sports"->"join_3916589616287113937"
+"join_8674665223082153551"[shape="diamond" label="" fillcolor="#111111"]
+"join_8674665223082153551"->"#end"
+"#start"[height="0.3" shape="circle" label="" style="filled" fillcolor="#111111"]
 "#start"->"wake up"
 "stand up"
 "stand up"->"cond_5577006791947779410"
@@ -10,23 +24,9 @@ edge [arrowhead="open" color="white" fontcolor="white" splines="curved"]
 "shower"->"get clothed"
 "get clothed"
 "get clothed"->"brush teeth"
-"join_5577006791947779410"[shape="diamond" label="" fillcolor="#111111"]
-"join_5577006791947779410"->"#end"
-"#end"[fillcolor="#111111" height="0.3" shape="doublecircle" label="" style="filled"]
-"wake up"
-"wake up"->"stand up"
-"cond_5577006791947779410"[shape="diamond" label="" fillcolor="#111111"]
-"cond_5577006791947779410"->"shower"[label=" [not tired]"]
-"cond_5577006791947779410"->"drink coffee"[label=" [tired]"]
 "brush teeth"
-"brush teeth"->"join_5577006791947779410"
-"drink coffee"
-"drink coffee"->"cond_6129484611666145821"
-"cond_6129484611666145821"[shape="diamond" label="" fillcolor="#111111"]
-"cond_6129484611666145821"->"make sports"[label=" [still tired]"]
-"cond_6129484611666145821"->"join_6129484611666145821"
-"make sports"
-"make sports"->"join_6129484611666145821"
-"join_6129484611666145821"[fillcolor="#111111" shape="diamond" label=""]
-"join_6129484611666145821"->"join_5577006791947779410"
+"brush teeth"->"join_8674665223082153551"
+"cond_4037200794235010051"[label="" fillcolor="#111111" shape="diamond"]
+"cond_4037200794235010051"->"make sports"[label=" [still tired]"]
+"cond_4037200794235010051"->"join_3916589616287113937"
 }

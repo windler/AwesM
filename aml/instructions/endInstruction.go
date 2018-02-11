@@ -1,9 +1,11 @@
 package instructions
 
-type EndInstructionFactory struct{}
+type EndInstructionFactory struct {
+	*NoForkFactory
+}
 
-func (f EndInstructionFactory) New(name string) AMLInstruction {
-	return AMLInstruction{
+func (f EndInstructionFactory) New(name string) *AMLInstruction {
+	return &AMLInstruction{
 		Name: name,
 		NodeOptions: map[string]string{
 			"shape":     "doublecircle",

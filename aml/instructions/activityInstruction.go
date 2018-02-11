@@ -1,9 +1,11 @@
 package instructions
 
-type ActivityInstructionFactory struct{}
+type ActivityInstructionFactory struct {
+	*NoForkFactory
+}
 
-func (f ActivityInstructionFactory) New(name string) AMLInstruction {
-	return AMLInstruction{
+func (f ActivityInstructionFactory) New(name string) *AMLInstruction {
+	return &AMLInstruction{
 		Name:        name,
 		NodeOptions: make(map[string]string),
 		EdgeOptions: make(map[string]string),

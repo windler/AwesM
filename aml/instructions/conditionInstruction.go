@@ -9,17 +9,18 @@ import (
 
 type IfInstructionFactory struct{}
 
-func (f IfInstructionFactory) New(name string) AMLInstruction {
-	randName := strconv.FormatInt(int64(rand.Int()), 10)
-
-	ins := AMLInstruction{
+func (f IfInstructionFactory) New(name string) *AMLInstruction {
+	return &AMLInstruction{
 		Name: getNodeName(name),
 		EdgeOptions: map[string]string{
 			"label": getLabelName(name),
 		},
 	}
+}
 
-	forkNode := &AMLInstruction{
+func (f IfInstructionFactory) NewForkNode(name string) *AMLInstruction {
+	randName := strconv.FormatInt(int64(rand.Int()), 10)
+	return &AMLInstruction{
 		Name: "cond_" + randName,
 		NodeOptions: map[string]string{
 			"shape":     "diamond",
@@ -28,8 +29,11 @@ func (f IfInstructionFactory) New(name string) AMLInstruction {
 		},
 		EdgeOptions: make(map[string]string),
 	}
+}
 
-	joinNode := &AMLInstruction{
+func (f IfInstructionFactory) NewJoinNode(name string, forkNode *AMLInstruction) *AMLInstruction {
+	randName := strconv.FormatInt(int64(rand.Int()), 10)
+	return &AMLInstruction{
 		Name: "join_" + randName,
 		NodeOptions: map[string]string{
 			"shape":     "diamond",
@@ -39,11 +43,6 @@ func (f IfInstructionFactory) New(name string) AMLInstruction {
 		EdgeOptions:  make(map[string]string),
 		Predecessors: getJoinNodePredecessors(name, forkNode),
 	}
-
-	forkNode.PathJoinNode = joinNode
-	ins.PathForkNode = forkNode
-
-	return ins
 }
 
 func getLabelName(name string) string {
