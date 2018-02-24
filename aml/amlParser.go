@@ -1,6 +1,7 @@
 package aml
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"regexp"
@@ -33,6 +34,12 @@ func (p *AMLFileParser) AddFactory(factory AMLInstructionFactory) {
 }
 
 func (p *AMLFileParser) Parse() (AMLFile, error) {
+	defer (func() {
+		if err := recover(); err != nil {
+			fmt.Println(err)
+		}
+	})()
+
 	aml := AMLFile{}
 	if _, err := os.Stat(p.file); err != nil {
 		return aml, err
@@ -57,10 +64,13 @@ func (p *AMLFileParser) parseLine(aml *AMLFile, line string) {
 
 	strippedLine := strings.Replace(line, ".", "", -1)
 	factory := p.getFactory(strippedLine)
+	if factory == nil {
+		return
+	}
 
 	new := (*factory).New(strippedLine)
 
-	p.handleFork(new, factory, line, aml)
+	p.handleFork(new, factory, line, strippedLine, aml)
 	p.handleParents(line, aml)
 	p.addInstruction(aml, new)
 }
@@ -79,15 +89,19 @@ func (p *AMLFileParser) addInstruction(aml *AMLFile, ins *instructions.AMLInstru
 	p.predecessor = ins
 }
 
-func (p *AMLFileParser) handlePathBeginningNode(ins *instructions.AMLInstruction) {
+func (p *AMLFileParser) handlePathBeginningNode() {
 	parent := p.getCurrentParent()
+
+	if parent == nil {
+		panic("No parent node found! Did you define a fork node and did not start a new hirachy?")
+	}
 
 	p.parentPathNodes[parent.Name] = append(p.parentPathNodes[parent.Name], *instructions.NewInstructionStack())
 	p.predecessor = parent
 }
 
-func (p *AMLFileParser) handleFork(new *instructions.AMLInstruction, factory *AMLInstructionFactory, line string, aml *AMLFile) {
-	forkNode := (*factory).NewForkNode(line)
+func (p *AMLFileParser) handleFork(new *instructions.AMLInstruction, factory *AMLInstructionFactory, line, strippedLine string, aml *AMLFile) {
+	forkNode := (*factory).NewForkNode(strippedLine)
 	if forkNode != nil {
 		tabs := strings.Count(line, ".") / 2
 
@@ -98,11 +112,11 @@ func (p *AMLFileParser) handleFork(new *instructions.AMLInstruction, factory *AM
 				*instructions.NewInstructionStack(),
 			}
 
-			joinNode := (*factory).NewJoinNode(line, forkNode)
+			joinNode := (*factory).NewJoinNode(strippedLine, forkNode)
 			p.parentJoinNode[forkNode.Name] = joinNode
 		}
 
-		p.handlePathBeginningNode(new)
+		p.handlePathBeginningNode()
 	}
 }
 
