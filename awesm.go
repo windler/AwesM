@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/windler/dotgraph/renderer"
 
@@ -10,7 +11,14 @@ import (
 )
 
 func main() {
-	amlParser := aml.NewFileParser("examples/simple_test.aml")
+	argsWithoutProg := os.Args[1:]
+
+	if len(argsWithoutProg) != 1 {
+		fmt.Println("no file provided.")
+		return
+	}
+
+	amlParser := aml.NewFileParser(argsWithoutProg[0])
 	amlParser.AddFactory(instructions.StartInstructionFactory{})
 	amlParser.AddFactory(instructions.EndInstructionFactory{})
 	amlParser.AddFactory(instructions.IfInstructionFactory{})
@@ -25,7 +33,7 @@ func main() {
 
 	r := renderer.PNGRenderer{
 		HomeDir:    "",
-		OutputFile: "examples/simple_test.png",
+		OutputFile: argsWithoutProg[0] + ".png",
 		Prefix:     "",
 	}
 	r.Render(aml.CreateDotGraph().String())

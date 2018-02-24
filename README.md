@@ -17,5 +17,9 @@ stand up
 #end
 ``` 
 
+```bash
+awesm examples/simple_test.aml
+```
+
 Output:  
-![testoutput](examples/simple_test.png)
+![testoutput](examples/simple_test.aml.png)
