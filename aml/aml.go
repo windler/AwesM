@@ -4,12 +4,14 @@ import (
 	"github.com/windler/awesm/aml/instructions"
 )
 
-type AMLParser interface {
-	AddFactory(keyword string, factory AMLInstructionFactory)
+//Parser parses a *.aml file
+type Parser interface {
+	AddFactory(keyword string, factory InstructionFactory)
 	Parse() (AMLFile, error)
 }
 
-type AMLInstructionFactory interface {
+//InstructionFactory creates instructions based on patterns
+type InstructionFactory interface {
 	New(name string) *instructions.AMLInstruction
 	NewForkNode(name string) *instructions.AMLInstruction
 	NewJoinNode(name string, forkNode *instructions.AMLInstruction) *instructions.AMLInstruction

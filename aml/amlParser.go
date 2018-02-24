@@ -12,7 +12,7 @@ import (
 
 type AMLFileParser struct {
 	file            string
-	factories       []AMLInstructionFactory
+	factories       []InstructionFactory
 	predecessor     *instructions.AMLInstruction
 	parents         *instructions.InstructionStack
 	parentPathNodes map[string][]instructions.InstructionStack
@@ -22,14 +22,14 @@ type AMLFileParser struct {
 func NewFileParser(file string) *AMLFileParser {
 	return &AMLFileParser{
 		file:            file,
-		factories:       []AMLInstructionFactory{},
+		factories:       []InstructionFactory{},
 		parents:         instructions.NewInstructionStack(),
 		parentPathNodes: map[string][]instructions.InstructionStack{},
 		parentJoinNode:  map[string]*instructions.AMLInstruction{},
 	}
 }
 
-func (p *AMLFileParser) AddFactory(factory AMLInstructionFactory) {
+func (p *AMLFileParser) AddFactory(factory InstructionFactory) {
 	p.factories = append(p.factories, factory)
 }
 
@@ -100,7 +100,7 @@ func (p *AMLFileParser) handlePathBeginningNode() {
 	p.predecessor = parent
 }
 
-func (p *AMLFileParser) handleFork(new *instructions.AMLInstruction, factory *AMLInstructionFactory, line, strippedLine string, aml *AMLFile) {
+func (p *AMLFileParser) handleFork(new *instructions.AMLInstruction, factory *InstructionFactory, line, strippedLine string, aml *AMLFile) {
 	forkNode := (*factory).NewForkNode(strippedLine)
 	if forkNode != nil {
 		tabs := strings.Count(line, ".") / 2
@@ -149,7 +149,7 @@ func (p *AMLFileParser) getCurrentParent() *instructions.AMLInstruction {
 	return nil
 }
 
-func (p *AMLFileParser) getFactory(line string) *AMLInstructionFactory {
+func (p *AMLFileParser) getFactory(line string) *InstructionFactory {
 	for _, f := range p.factories {
 		if matches, _ := regexp.MatchString(f.GetPattern(), line); matches {
 			return &f

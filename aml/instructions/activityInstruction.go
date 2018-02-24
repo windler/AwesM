@@ -1,9 +1,11 @@
 package instructions
 
+//ActivityInstructionFactory creates Activity-Nodes
 type ActivityInstructionFactory struct {
 	*NoForkFactory
 }
 
+//New creates a new instrcution
 func (f ActivityInstructionFactory) New(name string) *AMLInstruction {
 	return &AMLInstruction{
 		Name:        name,
@@ -12,6 +14,7 @@ func (f ActivityInstructionFactory) New(name string) *AMLInstruction {
 	}
 }
 
+//GetPattern get the pattern this factory can handle
 func (f ActivityInstructionFactory) GetPattern() string {
 	return ".*"
 }

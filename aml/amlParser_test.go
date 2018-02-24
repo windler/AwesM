@@ -23,7 +23,7 @@ func TestNoFactories(t *testing.T) {
 func TestFactoryPatternDoesNotMatch(t *testing.T) {
 	file := createTestFile(`#start`)
 
-	factoryMock := &mocks.AMLInstructionFactory{}
+	factoryMock := &mocks.InstructionFactory{}
 	factoryMock.On("GetPattern").Return("^!.*")
 
 	parser := NewFileParser(file)
@@ -45,7 +45,7 @@ func TestFactoryPatternMatchesNoForkNode(t *testing.T) {
 		EdgeOptions: make(map[string]string),
 	}
 
-	factoryMock := &mocks.AMLInstructionFactory{}
+	factoryMock := &mocks.InstructionFactory{}
 	factoryMock.On("GetPattern").Return("^#.*")
 	factoryMock.On("New", "#start").Return(testInstruction)
 	factoryMock.On("NewForkNode", "#start").Return(nil)
@@ -86,7 +86,7 @@ func TestForkNode(t *testing.T) {
 		EdgeOptions: make(map[string]string),
 	}
 
-	factoryMock := &mocks.AMLInstructionFactory{}
+	factoryMock := &mocks.InstructionFactory{}
 	factoryMock.On("GetPattern").Return("^#.*")
 	factoryMock.On("New", "#start").Return(testInstruction)
 	factoryMock.On("NewForkNode", "#start").Return(nil)
@@ -95,7 +95,7 @@ func TestForkNode(t *testing.T) {
 	factoryMock.On("New", "#end").Return(testInstruction)
 	factoryMock.On("NewForkNode", "#end").Return(nil)
 
-	forkFactoryMock := &mocks.AMLInstructionFactory{}
+	forkFactoryMock := &mocks.InstructionFactory{}
 	forkFactoryMock.On("GetPattern").Return("!.*")
 	forkFactoryMock.On("New", "!fork").Return(testInstruction)
 	forkFactoryMock.On("NewForkNode", "!fork").Return(forkInstruction)
@@ -131,12 +131,12 @@ func TestForkNodeNoHirachy(t *testing.T) {
 		EdgeOptions: make(map[string]string),
 	}
 
-	factoryMock := &mocks.AMLInstructionFactory{}
+	factoryMock := &mocks.InstructionFactory{}
 	factoryMock.On("GetPattern").Return("^#.*")
 	factoryMock.On("New", "#start").Return(testInstruction)
 	factoryMock.On("NewForkNode", "#start").Return(nil)
 
-	forkFactoryMock := &mocks.AMLInstructionFactory{}
+	forkFactoryMock := &mocks.InstructionFactory{}
 	forkFactoryMock.On("GetPattern").Return("!.*")
 	forkFactoryMock.On("New", "!fork").Return(testInstruction)
 	forkFactoryMock.On("NewForkNode", "!fork").Return(forkInstruction)

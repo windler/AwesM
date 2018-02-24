@@ -7,14 +7,17 @@ import (
 	"strings"
 )
 
+//IfInstructionFactory creates condition nodes
 type IfInstructionFactory struct{}
 
+//New creates a new instrcution
 func (f IfInstructionFactory) New(name string) *AMLInstruction {
 	activity := ActivityInstructionFactory{}.New(getCondNodeName(name))
 	activity.EdgeOptions["label"] = getCondLabelName(name)
 	return activity
 }
 
+//NewForkNode create a fork node which is added a the beginnen of the path
 func (f IfInstructionFactory) NewForkNode(name string) *AMLInstruction {
 	randName := strconv.FormatInt(int64(rand.Int()), 10)
 	return &AMLInstruction{
@@ -28,6 +31,7 @@ func (f IfInstructionFactory) NewForkNode(name string) *AMLInstruction {
 	}
 }
 
+//NewJoinNode create a join node which is added a the end of the path
 func (f IfInstructionFactory) NewJoinNode(name string, forkNode *AMLInstruction) *AMLInstruction {
 	randName := strconv.FormatInt(int64(rand.Int()), 10)
 	return &AMLInstruction{
@@ -59,6 +63,7 @@ func getCondJoinNodePredecessors(name string, ins *AMLInstruction) []*AMLInstruc
 	return []*AMLInstruction{}
 }
 
+//GetPattern get the pattern this factory can handle
 func (f IfInstructionFactory) GetPattern() string {
 	return "\\?{1,2}\\[.+\\]"
 }
