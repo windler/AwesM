@@ -2,19 +2,6 @@ package instructions
 
 import "github.com/windler/dotgraph/graph"
 
-//NoForkFactory is a factory that does not provide fork- and join-nodes
-type NoForkFactory struct{}
-
-//NewJoinNode create a join node which is added a the end of the path
-func (f *NoForkFactory) NewJoinNode(name string, forkNode *AMLInstruction) *AMLInstruction {
-	return nil
-}
-
-//NewForkNode create a fork node which is added a the beginnen of the path
-func (f *NoForkFactory) NewForkNode(name string) *AMLInstruction {
-	return nil
-}
-
 //AMLInstruction is a instruction within an *.aml file
 type AMLInstruction struct {
 	Name         string

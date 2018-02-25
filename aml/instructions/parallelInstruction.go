@@ -9,11 +9,6 @@ import (
 //ParallelInstructionFactory create a parallel-node
 type ParallelInstructionFactory struct{}
 
-//New creates a new instrcution
-func (f ParallelInstructionFactory) New(name string) *AMLInstruction {
-	return ActivityInstructionFactory{}.New(getParallelNodeName(name))
-}
-
 //NewForkNode create a fork node which is added a the beginnen of the path
 func (f ParallelInstructionFactory) NewForkNode(name string) *AMLInstruction {
 	randName := strconv.FormatInt(int64(rand.Int()), 10)
@@ -26,7 +21,8 @@ func (f ParallelInstructionFactory) NewForkNode(name string) *AMLInstruction {
 			"height":    "0.1",
 			"width":     "2",
 		},
-		EdgeOptions: make(map[string]string),
+		EdgeOptions:  make(map[string]string),
+		Predecessors: []*AMLInstruction{},
 	}
 }
 
@@ -42,7 +38,8 @@ func (f ParallelInstructionFactory) NewJoinNode(name string, forkNode *AMLInstru
 			"height":    "0.1",
 			"width":     "2",
 		},
-		EdgeOptions: make(map[string]string),
+		EdgeOptions:  make(map[string]string),
+		Predecessors: []*AMLInstruction{},
 	}
 }
 
@@ -53,5 +50,9 @@ func getParallelNodeName(name string) string {
 
 //GetPattern get the pattern this factory can handle
 func (f ParallelInstructionFactory) GetPattern() string {
-	return "\\|.+"
+	return "fork"
+}
+
+func (f ParallelInstructionFactory) ProvidesPathLabels() bool {
+	return false
 }

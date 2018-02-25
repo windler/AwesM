@@ -1,0 +1,18 @@
+diagram:
+    - start
+    - wake up
+    - stand up
+    - if: 
+        "not tired?":
+            - shower
+            - get clothed
+        "tired?":
+            - drink coffee
+            - ifopt:
+                "still tired?":
+                    - fork:
+                        path1:
+                            - put on socks
+                        path2:
+                            - go to toilet
+    - end

@@ -5,9 +5,7 @@ import (
 )
 
 //StartInstructionFactory creates a starting-node
-type StartInstructionFactory struct {
-	*NoForkFactory
-}
+type StartInstructionFactory struct{}
 
 //New creates a new instrcution
 func (f StartInstructionFactory) New(name string) *AMLInstruction {
@@ -27,5 +25,5 @@ func (f StartInstructionFactory) New(name string) *AMLInstruction {
 
 //GetPattern get the pattern this factory can handle
 func (f StartInstructionFactory) GetPattern() string {
-	return "#start"
+	return "start"
 }

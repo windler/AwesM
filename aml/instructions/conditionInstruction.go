@@ -2,20 +2,11 @@ package instructions
 
 import (
 	"math/rand"
-	"regexp"
 	"strconv"
-	"strings"
 )
 
 //IfInstructionFactory creates condition nodes
 type IfInstructionFactory struct{}
-
-//New creates a new instrcution
-func (f IfInstructionFactory) New(name string) *AMLInstruction {
-	activity := ActivityInstructionFactory{}.New(getCondNodeName(name))
-	activity.EdgeOptions["label"] = getCondLabelName(name)
-	return activity
-}
 
 //NewForkNode create a fork node which is added a the beginnen of the path
 func (f IfInstructionFactory) NewForkNode(name string) *AMLInstruction {
@@ -27,7 +18,8 @@ func (f IfInstructionFactory) NewForkNode(name string) *AMLInstruction {
 			"label":     "",
 			"fillcolor": "#111111",
 		},
-		EdgeOptions: make(map[string]string),
+		EdgeOptions:  make(map[string]string),
+		Predecessors: []*AMLInstruction{},
 	}
 }
 
@@ -46,18 +38,8 @@ func (f IfInstructionFactory) NewJoinNode(name string, forkNode *AMLInstruction)
 	}
 }
 
-func getCondLabelName(name string) string {
-	r := regexp.MustCompile("\\?{1,2}\\[(.+)\\].+")
-	return " [" + r.FindStringSubmatch(name)[1] + "]"
-}
-
-func getCondNodeName(name string) string {
-	r := regexp.MustCompile("\\?{1,2}\\[.+\\](.+)")
-	return r.FindStringSubmatch(name)[1]
-}
-
 func getCondJoinNodePredecessors(name string, ins *AMLInstruction) []*AMLInstruction {
-	if strings.Contains(name, "??") {
+	if name == "ifopt" {
 		return []*AMLInstruction{ins}
 	}
 	return []*AMLInstruction{}
@@ -65,5 +47,9 @@ func getCondJoinNodePredecessors(name string, ins *AMLInstruction) []*AMLInstruc
 
 //GetPattern get the pattern this factory can handle
 func (f IfInstructionFactory) GetPattern() string {
-	return "\\?{1,2}\\[.+\\]"
+	return "if|ifopt"
+}
+
+func (f IfInstructionFactory) ProvidesPathLabels() bool {
+	return true
 }

@@ -38,35 +38,3 @@ func (_m *InstructionFactory) New(name string) *instructions.AMLInstruction {
 
 	return r0
 }
-
-// NewForkNode provides a mock function with given fields: name
-func (_m *InstructionFactory) NewForkNode(name string) *instructions.AMLInstruction {
-	ret := _m.Called(name)
-
-	var r0 *instructions.AMLInstruction
-	if rf, ok := ret.Get(0).(func(string) *instructions.AMLInstruction); ok {
-		r0 = rf(name)
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*instructions.AMLInstruction)
-		}
-	}
-
-	return r0
-}
-
-// NewJoinNode provides a mock function with given fields: name, forkNode
-func (_m *InstructionFactory) NewJoinNode(name string, forkNode *instructions.AMLInstruction) *instructions.AMLInstruction {
-	ret := _m.Called(name, forkNode)
-
-	var r0 *instructions.AMLInstruction
-	if rf, ok := ret.Get(0).(func(string, *instructions.AMLInstruction) *instructions.AMLInstruction); ok {
-		r0 = rf(name, forkNode)
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*instructions.AMLInstruction)
-		}
-	}
-
-	return r0
-}

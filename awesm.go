@@ -19,11 +19,12 @@ func main() {
 	}
 
 	amlParser := aml.NewFileParser(argsWithoutProg[0])
-	amlParser.AddFactory(instructions.StartInstructionFactory{})
-	amlParser.AddFactory(instructions.EndInstructionFactory{})
-	amlParser.AddFactory(instructions.IfInstructionFactory{})
-	amlParser.AddFactory(instructions.ParallelInstructionFactory{})
-	amlParser.AddFactory(instructions.ActivityInstructionFactory{})
+	amlParser.AddInstructionFactory(instructions.StartInstructionFactory{})
+	amlParser.AddInstructionFactory(instructions.EndInstructionFactory{})
+	amlParser.AddInstructionFactory(instructions.ActivityInstructionFactory{})
+
+	amlParser.AddForkJoinFactory(instructions.IfInstructionFactory{})
+	amlParser.AddForkJoinFactory(instructions.ParallelInstructionFactory{})
 
 	aml, err := amlParser.Parse()
 	if err != nil {

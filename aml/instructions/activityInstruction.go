@@ -1,16 +1,15 @@
 package instructions
 
 //ActivityInstructionFactory creates Activity-Nodes
-type ActivityInstructionFactory struct {
-	*NoForkFactory
-}
+type ActivityInstructionFactory struct{}
 
 //New creates a new instrcution
 func (f ActivityInstructionFactory) New(name string) *AMLInstruction {
 	return &AMLInstruction{
-		Name:        name,
-		NodeOptions: make(map[string]string),
-		EdgeOptions: make(map[string]string),
+		Name:         name,
+		NodeOptions:  make(map[string]string),
+		EdgeOptions:  make(map[string]string),
+		Predecessors: []*AMLInstruction{},
 	}
 }
 

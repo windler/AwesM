@@ -1,9 +1,7 @@
 package instructions
 
 //EndInstructionFactory creates end-nodes
-type EndInstructionFactory struct {
-	*NoForkFactory
-}
+type EndInstructionFactory struct{}
 
 //New creates a new instrcution
 func (f EndInstructionFactory) New(name string) *AMLInstruction {
@@ -22,5 +20,5 @@ func (f EndInstructionFactory) New(name string) *AMLInstruction {
 
 //GetPattern get the pattern this factory can handle
 func (f EndInstructionFactory) GetPattern() string {
-	return "#end"
+	return "end"
 }
