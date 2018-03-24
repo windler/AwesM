@@ -8,7 +8,7 @@ import (
 type Parser interface {
 	AddInstructionFactory(keyword string, factory InstructionFactory)
 	AddForkJoinFactory(keyword string, factory ForkJoinFactory)
-	Parse() (AMLFile, error)
+	Parse() (File, error)
 }
 
 //InstructionFactory creates instructions based on patterns

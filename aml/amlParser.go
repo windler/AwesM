@@ -11,39 +11,50 @@ import (
 	"github.com/windler/awesm/aml/instructions"
 )
 
-type AMLFileParser struct {
+//FileParser parses a yaml file
+type FileParser struct {
+	env          *amlEnv
+	predecessor  *instructions.AMLInstruction
+	parents      *instructions.InstructionStack
+	currentLabel string
+}
+
+type amlEnv struct {
 	file          string
 	factories     []InstructionFactory
 	forkFactories []ForkJoinFactory
-	predecessor   *instructions.AMLInstruction
-	parents       *instructions.InstructionStack
-	currentLabel  string
 }
 
-func NewFileParser(file string) *AMLFileParser {
-	return &AMLFileParser{
-		file:          file,
-		factories:     []InstructionFactory{},
-		forkFactories: []ForkJoinFactory{},
-		parents:       instructions.NewInstructionStack(),
+//NewFileParser creates a new FileParser
+func NewFileParser(file string) *FileParser {
+	return &FileParser{
+		env: &amlEnv{
+			file:          file,
+			factories:     []InstructionFactory{},
+			forkFactories: []ForkJoinFactory{},
+		},
+		parents: instructions.NewInstructionStack(),
 	}
 }
 
-func (p *AMLFileParser) AddInstructionFactory(factory InstructionFactory) {
-	p.factories = append(p.factories, factory)
+//AddInstructionFactory adds a InstructionFactory
+func (p *FileParser) AddInstructionFactory(factory InstructionFactory) {
+	p.env.factories = append(p.env.factories, factory)
 }
 
-func (p *AMLFileParser) AddForkJoinFactory(factory ForkJoinFactory) {
-	p.forkFactories = append(p.forkFactories, factory)
+//AddForkJoinFactory adds a ForkJoinFactory
+func (p *FileParser) AddForkJoinFactory(factory ForkJoinFactory) {
+	p.env.forkFactories = append(p.env.forkFactories, factory)
 }
 
-func (p *AMLFileParser) Parse() (AMLFile, error) {
-	aml := AMLFile{}
-	if _, err := os.Stat(p.file); err != nil {
+//Parse parses a given AMLFile
+func (p *FileParser) Parse() (File, error) {
+	aml := File{}
+	if _, err := os.Stat(p.env.file); err != nil {
 		return aml, err
 	}
 
-	data, err := ioutil.ReadFile(p.file)
+	data, err := ioutil.ReadFile(p.env.file)
 	if err != nil {
 		return aml, err
 	}
@@ -56,7 +67,7 @@ func (p *AMLFileParser) Parse() (AMLFile, error) {
 	return aml, nil
 }
 
-func (p *AMLFileParser) parseDiagram(aml *AMLFile, diagram interface{}) error {
+func (p *FileParser) parseDiagram(aml *File, diagram interface{}) error {
 	switch diagram.(type) {
 	case []interface{}:
 		for _, val := range diagram.([]interface{}) {
@@ -69,7 +80,7 @@ func (p *AMLFileParser) parseDiagram(aml *AMLFile, diagram interface{}) error {
 	return nil
 }
 
-func (p *AMLFileParser) parseInstruction(ins interface{}, aml *AMLFile) error {
+func (p *FileParser) parseInstruction(ins interface{}, aml *File) error {
 	switch ins.(type) {
 	case string:
 		p.handleNewInstruction(aml, ins.(string))
@@ -88,7 +99,7 @@ func (p *AMLFileParser) parseInstruction(ins interface{}, aml *AMLFile) error {
 	return nil
 }
 
-func (p *AMLFileParser) handleNewInstruction(aml *AMLFile, ins string) {
+func (p *FileParser) handleNewInstruction(aml *File, ins string) {
 	factory := p.getFactory(ins)
 
 	if factory == nil {
@@ -99,7 +110,7 @@ func (p *AMLFileParser) handleNewInstruction(aml *AMLFile, ins string) {
 	p.addInstruction(aml, new)
 }
 
-func (p *AMLFileParser) handleNewFork(aml *AMLFile, fork string, subDiagram map[interface{}]interface{}) {
+func (p *FileParser) handleNewFork(aml *File, fork string, subDiagram map[interface{}]interface{}) {
 	factory := p.getForkJoinFactory(fork)
 
 	forkNode := (*factory).NewForkNode(fork)
@@ -123,7 +134,7 @@ func (p *AMLFileParser) handleNewFork(aml *AMLFile, fork string, subDiagram map[
 	p.addInstruction(aml, joinNode)
 }
 
-func (p *AMLFileParser) addInstruction(aml *AMLFile, ins *instructions.AMLInstruction) {
+func (p *FileParser) addInstruction(aml *File, ins *instructions.AMLInstruction) {
 	if p.getCurrentParent() != nil {
 		ins.Predecessors = append(ins.Predecessors, p.getCurrentParent())
 	} else if p.predecessor != nil {
@@ -142,7 +153,7 @@ func (p *AMLFileParser) addInstruction(aml *AMLFile, ins *instructions.AMLInstru
 	}
 }
 
-func (p *AMLFileParser) getCurrentParent() *instructions.AMLInstruction {
+func (p *FileParser) getCurrentParent() *instructions.AMLInstruction {
 	if p.parents.Len() > 0 {
 		parent := p.parents.Peek()
 		return parent
@@ -151,8 +162,8 @@ func (p *AMLFileParser) getCurrentParent() *instructions.AMLInstruction {
 	return nil
 }
 
-func (p *AMLFileParser) getFactory(line string) *InstructionFactory {
-	for _, f := range p.factories {
+func (p *FileParser) getFactory(line string) *InstructionFactory {
+	for _, f := range p.env.factories {
 		if matches, _ := regexp.MatchString(f.GetPattern(), line); matches {
 			return &f
 		}
@@ -161,8 +172,8 @@ func (p *AMLFileParser) getFactory(line string) *InstructionFactory {
 	return nil
 }
 
-func (p *AMLFileParser) getForkJoinFactory(line string) *ForkJoinFactory {
-	for _, f := range p.forkFactories {
+func (p *FileParser) getForkJoinFactory(line string) *ForkJoinFactory {
+	for _, f := range p.env.forkFactories {
 		if matches, _ := regexp.MatchString(f.GetPattern(), line); matches {
 			return &f
 		}

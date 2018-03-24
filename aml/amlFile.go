@@ -5,14 +5,14 @@ import (
 	"github.com/windler/dotgraph/graph"
 )
 
-//AMLFile represents an *.aml file
-type AMLFile struct {
+//File represents an *.aml file
+type File struct {
 	GraphType    string
 	Instructions []instructions.AMLInstruction
 }
 
 //CreateDotGraph creates a graph.dograph based on the *.aml file
-func (af AMLFile) CreateDotGraph() *graph.DotGraph {
+func (af File) CreateDotGraph() *graph.DotGraph {
 	g := graph.New(af.GraphType)
 	g.SetEdgeGraphOptions(graph.DotGraphOptions{
 		"arrowhead": "open",
