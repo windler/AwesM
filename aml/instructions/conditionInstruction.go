@@ -50,6 +50,7 @@ func (f IfInstructionFactory) GetPattern() string {
 	return "if|ifopt"
 }
 
+//ProvidesPathLabels determines wether this nodes has sub paths
 func (f IfInstructionFactory) ProvidesPathLabels() bool {
 	return true
 }

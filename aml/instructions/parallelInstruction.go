@@ -53,6 +53,7 @@ func (f ParallelInstructionFactory) GetPattern() string {
 	return "fork"
 }
 
+//ProvidesPathLabels determines wether this nodes has sub paths
 func (f ParallelInstructionFactory) ProvidesPathLabels() bool {
 	return false
 }
