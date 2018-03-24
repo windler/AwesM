@@ -1,37 +1,37 @@
 digraph  {
 graph [bgcolor="#333333"]
-node [style="filled" fontcolor="white" fontname="Courier" shape="oval" fillcolor="#336699"]
-edge [style="filled" fontcolor="white" fontname="Courier" shape="oval" fillcolor="#336699"]
-"cond_6129484611666145821"[shape="diamond" label="" fillcolor="#111111"]
-"cond_6129484611666145821"->"cond_3916589616287113937"[label="still tired?"]
-"cond_6129484611666145821"->"join_4037200794235010051"
-"join_6334824724549167320"[fillcolor="#111111" height="0.1" width="2" shape="rectangle" label=""]
-"join_6334824724549167320"->"join_4037200794235010051"
+node [fillcolor="#336699" style="filled" fontcolor="white" fontname="Courier" shape="oval"]
+edge [splines="curved" arrowhead="open" color="white" fontcolor="white"]
 "wake up"
 "wake up"->"stand up"
-"go to toilet"
-"go to toilet"->"join_6334824724549167320"
-"join_4037200794235010051"[shape="diamond" label="" fillcolor="#111111"]
-"join_4037200794235010051"->"join_8674665223082153551"
-"join_8674665223082153551"[shape="diamond" label="" fillcolor="#111111"]
-"join_8674665223082153551"->"end"
-"end"[shape="doublecircle" label="" style="filled" fillcolor="#111111" height="0.3"]
-"stand up"
-"stand up"->"cond_5577006791947779410"
-"shower"
-"shower"->"get clothed"
-"get clothed"
-"get clothed"->"join_8674665223082153551"
-"put on socks"
-"put on socks"->"join_6334824724549167320"
-"start"[label="" style="filled" fillcolor="#111111" height="0.3" shape="circle"]
-"start"->"wake up"
-"cond_5577006791947779410"[fillcolor="#111111" shape="diamond" label=""]
+"cond_5577006791947779410"[shape="diamond" label="" fillcolor="#111111"]
 "cond_5577006791947779410"->"shower"[label="not tired?"]
 "cond_5577006791947779410"->"drink coffee"[label="tired?"]
 "drink coffee"
 "drink coffee"->"cond_6129484611666145821"
-"cond_3916589616287113937"[height="0.1" width="2" shape="rectangle" label="" fillcolor="#111111"]
+"start"[shape="circle" label="" style="filled" fillcolor="#111111" height="0.3"]
+"start"->"wake up"
+"shower"
+"shower"->"get clothed"
+"get clothed"
+"get clothed"->"join_8674665223082153551"
+"cond_6129484611666145821"[shape="diamond" label="" fillcolor="#111111"]
+"cond_6129484611666145821"->"cond_3916589616287113937"[label="still tired?"]
+"cond_6129484611666145821"->"join_4037200794235010051"
+"cond_3916589616287113937"[width="2" shape="rectangle" label="" fillcolor="#111111" height="0.1"]
 "cond_3916589616287113937"->"put on socks"
 "cond_3916589616287113937"->"go to toilet"
+"put on socks"
+"put on socks"->"join_6334824724549167320"
+"stand up"
+"stand up"->"cond_5577006791947779410"
+"go to toilet"
+"go to toilet"->"join_6334824724549167320"
+"join_4037200794235010051"[shape="diamond" label="" fillcolor="#111111"]
+"join_4037200794235010051"->"join_8674665223082153551"
+"join_6334824724549167320"[shape="rectangle" label="" fillcolor="#111111" height="0.1" width="2"]
+"join_6334824724549167320"->"join_4037200794235010051"
+"join_8674665223082153551"[shape="diamond" label="" fillcolor="#111111"]
+"join_8674665223082153551"->"end"
+"end"[shape="doublecircle" label="" style="filled" fillcolor="#111111" height="0.3"]
 }
