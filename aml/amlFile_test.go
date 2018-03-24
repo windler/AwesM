@@ -25,7 +25,7 @@ func TestCreateDotGraph(t *testing.T) {
 		},
 		Predecessors: []*instructions.AMLInstruction{ins1},
 	}
-	aml := &AMLFile{
+	aml := &File{
 		GraphType: "mytype",
 		Instructions: []instructions.AMLInstruction{
 			*ins1,
