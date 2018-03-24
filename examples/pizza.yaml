@@ -1,0 +1,18 @@
+activity:
+    - start
+    - order received
+    - ifopt: 
+        "comment from customer?":
+            - consider comment
+    - choose dough
+    - choose sauce
+    - choose toppings
+    - fork:
+        path1:
+            - bake pizza
+        path2:
+            - organize driver
+        path3:
+            - calculate price
+    - deliver
+    - end

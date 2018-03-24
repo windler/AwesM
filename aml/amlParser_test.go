@@ -11,7 +11,7 @@ import (
 
 func TestNoFactories(t *testing.T) {
 	file := createTestFile(`
-diagram:
+activity:
   - start`)
 
 	parser := NewFileParser(file)
@@ -24,7 +24,7 @@ diagram:
 
 func TestFactoryPatternDoesNotMatch(t *testing.T) {
 	file := createTestFile(`
-diagram:
+activity:
   - start`)
 
 	factoryMock := &mocks.InstructionFactory{}
@@ -42,7 +42,7 @@ diagram:
 
 func TestForkNode(t *testing.T) {
 	file := createTestFile(`
-diagram:
+activity:
   - start
   - fork:
       forkPath1:

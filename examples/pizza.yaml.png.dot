@@ -1,0 +1,37 @@
+digraph  {
+graph [bgcolor="#333333" rankdir="LR"]
+node [fontname="Courier" shape="oval" fillcolor="#336699" style="filled" fontcolor="white"]
+edge [color="white" fontcolor="white" splines="curved" arrowhead="open"]
+"consider comment"
+"consider comment"->"join_8674665223082153551"
+"bake pizza"
+"bake pizza"->"join_4037200794235010051"
+"organize driver"
+"organize driver"->"join_4037200794235010051"
+"join_4037200794235010051"[label="" fillcolor="#111111" height="2" width="0.1" shape="rectangle"]
+"join_4037200794235010051"->"deliver"
+"deliver"
+"deliver"->"end"
+"end"[label="" style="filled" fillcolor="#111111" height="0.3" shape="doublecircle"]
+"start"[shape="circle" label="" style="filled" fillcolor="#111111" height="0.3"]
+"start"->"order received"
+"order received"
+"order received"->"cond_5577006791947779410"
+"cond_5577006791947779410"[shape="diamond" label="" fillcolor="#111111"]
+"cond_5577006791947779410"->"consider comment"[label="comment from customer?"]
+"cond_5577006791947779410"->"join_8674665223082153551"
+"choose toppings"
+"choose toppings"->"cond_6129484611666145821"
+"cond_6129484611666145821"[shape="rectangle" label="" fillcolor="#111111" height="2" width="0.1"]
+"cond_6129484611666145821"->"bake pizza"
+"cond_6129484611666145821"->"organize driver"
+"cond_6129484611666145821"->"calculate price"
+"calculate price"
+"calculate price"->"join_4037200794235010051"
+"join_8674665223082153551"[label="" fillcolor="#111111" shape="diamond"]
+"join_8674665223082153551"->"choose dough"
+"choose dough"
+"choose dough"->"choose sauce"
+"choose sauce"
+"choose sauce"->"choose toppings"
+}

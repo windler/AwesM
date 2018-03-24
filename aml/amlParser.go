@@ -62,7 +62,7 @@ func (p *FileParser) Parse() (File, error) {
 	var body map[string]interface{}
 	yaml.Unmarshal(data, &body)
 
-	p.parseDiagram(&aml, body["diagram"])
+	p.parseDiagram(&aml, body["activity"])
 
 	return aml, nil
 }

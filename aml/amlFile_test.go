@@ -4,6 +4,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/windler/awesm/aml/constants"
+
 	"github.com/stretchr/testify/assert"
 
 	"github.com/windler/awesm/aml/instructions"
@@ -33,7 +35,7 @@ func TestCreateDotGraph(t *testing.T) {
 		},
 	}
 
-	g := aml.CreateDotGraph()
+	g := aml.CreateDotGraph(constants.TopDowm)
 
 	assert.True(t, strings.Contains(g.String(), `"node1"->"node2"[a="b"]`))
 	assert.True(t, strings.Contains(g.String(), `"node2"[c="d"]`))

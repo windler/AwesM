@@ -12,7 +12,7 @@ type File struct {
 }
 
 //CreateDotGraph creates a graph.dograph based on the *.aml file
-func (af File) CreateDotGraph() *graph.DotGraph {
+func (af File) CreateDotGraph(orientation string) *graph.DotGraph {
 	g := graph.New(af.GraphType)
 	g.SetEdgeGraphOptions(graph.DotGraphOptions{
 		"arrowhead": "open",
@@ -31,6 +31,7 @@ func (af File) CreateDotGraph() *graph.DotGraph {
 
 	g.SetGraphOptions(graph.DotGraphOptions{
 		"bgcolor": "#333333",
+		"rankdir": orientation,
 	})
 
 	for _, instruction := range af.Instructions {
