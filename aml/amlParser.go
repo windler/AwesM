@@ -60,24 +60,31 @@ func (p *AMLFileParser) parseDiagram(aml *AMLFile, diagram interface{}) error {
 	switch diagram.(type) {
 	case []interface{}:
 		for _, val := range diagram.([]interface{}) {
-			switch val.(type) {
-			case string:
-				p.handleNewInstruction(aml, val.(string))
-			case map[interface{}]interface{}:
-				for key, subDiagram := range val.(map[interface{}]interface{}) {
-					switch subDiagram.(type) {
-					case map[interface{}]interface{}:
-						p.handleNewFork(aml, key.(string), subDiagram.(map[interface{}]interface{}))
-					default:
-						return errors.New("Invalid YAML after " + key.(string))
-					}
-				}
-			default:
-				return errors.New("Invalid YAML given")
+			if err := p.parseInstruction(val, aml); err != nil {
+				return err
 			}
 		}
 	}
 
+	return nil
+}
+
+func (p *AMLFileParser) parseInstruction(ins interface{}, aml *AMLFile) error {
+	switch ins.(type) {
+	case string:
+		p.handleNewInstruction(aml, ins.(string))
+	case map[interface{}]interface{}:
+		for key, subDiagram := range ins.(map[interface{}]interface{}) {
+			switch subDiagram.(type) {
+			case map[interface{}]interface{}:
+				p.handleNewFork(aml, key.(string), subDiagram.(map[interface{}]interface{}))
+			default:
+				return errors.New("Invalid YAML after " + key.(string))
+			}
+		}
+	default:
+		return errors.New("Invalid YAML given")
+	}
 	return nil
 }
 
